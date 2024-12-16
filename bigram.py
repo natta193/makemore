@@ -31,29 +31,16 @@ for i in range(27):
 plt.axis('off')
 plt.show()'''
 
-'''p = N[0].float()
-p = p/p.sum()
-g = torch.Generator().manual_seed(2147483647)
-ix = torch.multinomial(p, num_samples=1, replacement=True, generator=g).item()
-print(itos[ix])'''
-
-
 ## LOOP ##
 g = torch.Generator().manual_seed(2147483647)
-P = N.float()
-P = P / P.sum(1, keepdim=True)
+P = (N+1).float() # to prevent 0s - smoothing
+P /= P.sum(1, keepdim=True) # normalize
 
 for i in range(20):
     out = []
     ix = 0
     while True:
-        # p = N[ix].float()
-        # p = p/p.sum()
-
-        p = P[ix]  # trained
-
-        # untrained
-        # p = torch.ones(27) / 27.0
+        p = P[ix]
 
         ix = torch.multinomial(p, num_samples=1, replacement=True, generator=g).item()
         out.append(itos[ix])
@@ -61,3 +48,22 @@ for i in range(20):
             break
 
     print(''.join(out))
+
+
+# EVALUATING LOSS
+# log(a*b*c) = log(a) + log(b) + log(c)
+log_likelihood = 0
+n = 0
+for w in ["andrejq"]:
+    chs = ['.'] + list(w) + ['.']
+    for ch1, ch2 in zip(chs, chs[1:]):
+        ix1 = stoi[ch1]
+        ix2 = stoi[ch2]
+        prob = P[ix1, ix2]
+        logprob = torch.log(prob)
+        log_likelihood += logprob
+        n += 1
+        print(f'{ch1}{ch2}: {prob:.4f} {logprob:.4f}')
+
+nll = -log_likelihood
+print(f"{nll/n}")
