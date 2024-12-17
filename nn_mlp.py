@@ -2,7 +2,7 @@ import torch
 import torch.nn.functional as F
 import random
 import matplotlib.pyplot as plt
-import tqdm
+from tqdm import tqdm
 
 # read names
 words = open('data/names.txt').read().splitlines()
@@ -12,9 +12,10 @@ stoi = {s:i+1 for i,s in enumerate(chars)}
 stoi['.'] = 0
 itos = {i:s for s,i in stoi.items()}
 
+block_size = 3 # how many characters to use to predict the next one
+
 def build_dataset(words):
     # build the dataset
-    block_size = 3 # how many characters to use to predict the next one
     X, Y = [], [] # inputs, labels (predictions)
     for w in words:
         #print(w)
@@ -61,7 +62,7 @@ for p in parameters:
 lossi = []
 stepi = []
 
-for i in tqdm(range(200000)):
+for i in tqdm(range(100000)):
     # minibatch construct
     ix = torch.randint(0, Xtr.shape[0], (64,)) # better to have an approx gradient and make more steps then exact gradient and less steps
 
@@ -76,7 +77,7 @@ for i in tqdm(range(200000)):
         p.grad = None
     loss.backward()
     # update
-    lr = 0.1 if i < 100000 else 0.01
+    lr = 0.1 if i < 50000 else 0.01
     for p in parameters:
         p.data += -lr * p.grad
 
@@ -117,3 +118,19 @@ plt.show()
 #     plt.text(C[i,0].item(), C[i,1].item(), itos[i], ha='center', color='white')
 # plt.grid('minor')
 # plt.show()
+
+for _ in range(20):
+    out = []
+    context = [0] * block_size
+    while True:
+        emb = C[torch.tensor([context])]
+        h = torch.tanh(emb.view(1, -1) @ W1 + b1)
+        logits = h @ W2 + b2
+        probs = F.softmax(logits, dim=1)
+        ix = torch.multinomial(probs[0], num_samples=1).item()
+        context = context[1:] + [ix]
+        out.append(ix)
+        if ix == 0:
+            break
+
+    print(''.join(itos[i] for i in out))
