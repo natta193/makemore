@@ -43,7 +43,7 @@ Xte, Yte = build_dataset(words[n2:])
 # print(F.one_hot(torch.tensor(5), num_classes=27).float() @ C) # ALTERNATIVE
 
 C = torch.randn((27, 10))
-W1 = torch.randn((30, 200)) # 100 neurons
+W1 = torch.randn((30, 200)) # 100 neurons - 30 because concat of 3 character embeddings, each of which is a 10d vector
 b1 = torch.randn(200)
 W2 = torch.randn((200, 27))
 b2 = torch.randn(27)
