@@ -13,30 +13,30 @@ nn_trigram: 2.2483134269714355
 - test loss with dev smoothing 0.1: 2.2825894355773926
 
 nn_mlp:
-100 Neurons 30000 cycles 2 embd 0.1 lr:
-- Training Loss: 2.4981648921966553
-- Validation Loss: 2.515202283859253
+- 100 Neurons 30000 cycles 2 embd 0.1 lr:
+    - Training Loss: 2.4981648921966553
+    - Validation Loss: 2.515202283859253
 
-300 Neurons 30000 cycles 2 embd 0.1 lr:
-- Training Loss: 2.675812005996704
-- Validation Loss: 2.670238494873047
+- 300 Neurons 30000 cycles 2 embd 0.1 lr:
+    - Training Loss: 2.675812005996704
+    - Validation Loss: 2.670238494873047
 
-300 Neurons 100000 cycles 2 embd 0.1 lr:
-- Training Loss: 2.391284465789795
-- Validation Loss: 2.4003586769104004
+- 300 Neurons 100000 cycles 2 embd 0.1 lr:
+    - Training Loss: 2.391284465789795
+    - Validation Loss: 2.4003586769104004
 
-200 Neurons 30000 cycles 10 embd 0.1 lr:
-- Training Loss: 2.3099002838134766
-- Validation Loss: 2.325669050216675
+- 200 Neurons 30000 cycles 10 embd 0.1 lr:
+    - Training Loss: 2.3099002838134766
+    - Validation Loss: 2.325669050216675
 
-200 Neurons 60000 cycles 10 embd 0.05 lr:
-- Training Loss: 2.2728960514068604
-- Validation Loss: 2.2985517978668213
+- 200 Neurons 60000 cycles 10 embd 0.05 lr:
+    - Training Loss: 2.2728960514068604
+    - Validation Loss: 2.2985517978668213
 
-200 Neurons 200000 cycles 10 embd 0.1 -> 100000 then 0.01 lr:
-- Training Loss: 2.115107774734497
-- Validation Loss: 2.177528142929077
-- Test Loss: 2.173140287399292
+- 200 Neurons 200000 cycles 10 embd 0.1 -> 100000 then 0.01 lr:
+    - Training Loss: 2.115107774734497
+    - Validation Loss: 2.177528142929077
+    - Test Loss: 2.173140287399292
 
 BIGRAM:
 gh.
