@@ -33,7 +33,7 @@ plt.show()'''
 
 ## LOOP ##
 g = torch.Generator().manual_seed(2147483647)
-P = (N+1).float() # to prevent 0s - smoothing
+P = (N+10).float() # to prevent 0s - smoothing
 P /= P.sum(1, keepdim=True) # normalize
 
 for i in range(20):
@@ -54,7 +54,7 @@ for i in range(20):
 # log(a*b*c) = log(a) + log(b) + log(c)
 log_likelihood = 0
 n = 0
-for w in ["andrejq"]:
+for w in words:
     chs = ['.'] + list(w) + ['.']
     for ch1, ch2 in zip(chs, chs[1:]):
         ix1 = stoi[ch1]
