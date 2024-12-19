@@ -50,7 +50,9 @@ nn_mlp:
     - train 2.067953109741211
     - val 2.126673698425293
 
-- 200 Neurons 100000 cycles 10 embd 0.1 -> 50000 then 0.01 lr W2, B2, W1, B1 * 0.01, 0, 0.2, 0.01: - batch norm test optimization
+- 200 Neurons 200000 cycles 10 embd 0.1 -> 50000 then 0.01 lr W2, B2, W1 * 0.01, 0, kaiming init: - batch norm test optimization
+    - train 2.081411600112915
+    - val 2.132642984390259
 
 
 

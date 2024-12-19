@@ -2,7 +2,6 @@ import torch
 import torch.nn.functional as F
 import random
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 
 # read names
 words = open('data/names.txt').read().splitlines()
@@ -75,14 +74,14 @@ for p in parameters:
 # lri = []
 
 # more hyperparameters
-max_steps = 100000
-batch_size = 64
+max_steps = 200000
+batch_size = 32
 
 lossi = []
 # stepi = []
 
 ## TRAINING LOOP ##
-for i in tqdm(range(max_steps)):
+for i in (range(max_steps)):
 
     # minibatch construct
     ix = torch.randint(0, Xtr.shape[0], (batch_size,)) # better to have an approx gradient and make more steps then exact gradient and less steps
@@ -90,13 +89,13 @@ for i in tqdm(range(max_steps)):
 
     # forward pass
     emb = C[Xb] # embed the characters into vectors 
-    emb_cat = emb.view(-1, 30) # concatenate the vectors
+    emb_cat = emb.view(emb.shape[0], -1) # concatenate the vectors
     hpreact = emb_cat @ W1 #+ b1 # hidden layer pre-activation
     bnmeani = hpreact.mean(0, keepdim=True)
     bnstdi = hpreact.std(0, keepdim=True)
     hpreact = bngain * (hpreact - bnmeani) / bnstdi + bnbias # BATCH NORM - introduces noise but helps with overfitting
 
-    with torch.nograd():
+    with torch.no_grad():
         bnmean_running = 0.999 * bnmean_running + 0.001 * bnmeani
         bnstd_running = 0.999 * bnstd_running + 0.001 * bnstdi
 
@@ -160,6 +159,26 @@ def split_loss(split): # TEST
 split_loss('train')
 split_loss('val')
 
+# for _ in range(20):
+
+#     out = []
+#     context = [0] * block_size
+#     while True:
+#         # forward pass the neural net
+#         emb = C[torch.tensor([context])] # (1, block_size, n_embd)
+#         h = torch.tanh(emb.view(1, -1) @ W1) #+ b1)
+#         logits = h @ W2 + b2
+#         probs = F.softmax(logits, dim=1)
+#         # sample from the distribution
+#         ix = torch.multinomial(probs[0], num_samples=1).item()
+#         # shift the context window and track the samples
+#         context = context[1:] + [ix]
+#         out.append(ix)
+#         if ix == 0:
+#             break
+
+#     print(''.join(itos[i] for i in out))
+
 for _ in range(20):
 
     out = []
@@ -167,7 +186,10 @@ for _ in range(20):
     while True:
         # forward pass the neural net
         emb = C[torch.tensor([context])] # (1, block_size, n_embd)
-        h = torch.tanh(emb.view(1, -1) @ W1) #+ b1)
+        embcat = emb.view(emb.shape[0], -1)
+        hpreact = embcat @ W1
+        hpreact = bngain * (hpreact - bnmean_running) / bnstd_running + bnbias
+        h = torch.tanh(hpreact)
         logits = h @ W2 + b2
         probs = F.softmax(logits, dim=1)
         # sample from the distribution
@@ -179,3 +201,4 @@ for _ in range(20):
             break
 
     print(''.join(itos[i] for i in out))
+
