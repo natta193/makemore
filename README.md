@@ -54,6 +54,10 @@ nn_mlp:
     - train 2.081411600112915
     - val 2.132642984390259
 
+- 200 Neurons 50000 cycles 10 embd 0.1 -> 3/4 then 0.01 kaiming init - pytorchify
+    - train 2.0762665271759033
+    - val 2.1331827640533447
+
 
 
 BIGRAM:
@@ -72,3 +76,7 @@ koad. tanna. elioslynn. madessi. cerna. jakee. jomanxjonsonne. me. nayonit. pray
 MLP2: (no batch norm)
 terrine. dale. abduvann. ewnee. osue. mae. diz. reb. danceseriem. ayde. phiel. iseyli. ney.
 rebel. ameki. kaylyn. keviannaelini. ersey. tai. dmaniaquan.
+
+Pytorchify MLP:
+montalmyah. see. mad. rylla. emmastendraeg. adelyn. elin. shi. jen. eden. camanara.
+mykioh. kasin. shubergihiriel. kindreelynn. novana. ubakynda. jamelizeks. kayshawn. yas.
