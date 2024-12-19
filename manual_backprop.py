@@ -2,6 +2,7 @@ import torch
 import torch.nn.functional as F
 import random
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 # read names
 words = open('data/names.txt').read().splitlines()
@@ -60,14 +61,15 @@ parameters = [C, W1, b1, W2, b2, bngain, bnbias] #, b1] # to train
 print("Parameters:", sum(p.nelement() for p in parameters))
 
 # hyperparameters
-max_steps = 200000
-batch_size = 32
+max_steps = 100000
+decay = int((3/4)*(max_steps))
+batch_size = 64
 n = batch_size
 lossi = []
 
 ## TRAINING LOOP ##
 with torch.no_grad():
-    for iteration in (range(max_steps)):
+    for iteration in tqdm(range(max_steps)):
 
         # minibatch construct
         ix = torch.randint(0, Xtr.shape[0], (batch_size,)) # better to have an approx gradient and make more steps then exact gradient and less steps
@@ -118,7 +120,7 @@ with torch.no_grad():
         grads = [dC, dW1, db1, dW2, db2, dbngain, dbnbias]
 
         # update
-        lr = 0.1 if i < 100000 else 0.01
+        lr = 0.1 if i < decay else 0.01
         for p, grad in zip(parameters, grads):
             p.data += -lr * grad
 
