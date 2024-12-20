@@ -118,7 +118,7 @@ for p in parameters:
     p.requires_grad = True
 
 # same optimization as last time
-max_steps = 30000
+max_steps = 200000
 lr_decay = int((3/4)*(max_steps))
 batch_size = 32
 lossi = []
@@ -147,15 +147,15 @@ for i in tqdm(range(max_steps)):
         p.data += -lr * p.grad
     
     # track stats
-    if i % 10000 == 0:
-        print(f"{i:7d}/{max_steps:7d}: {loss.item():.4f}")
-    lossi.append(loss.log10().item())    
+    # if i % 10000 == 0:
+    #     print(f"{i:7d}/{max_steps:7d}: {loss.item():.4f}")
+    lossi.append(loss.item())
 
 plt.plot(lossi)
 plt.title("Loss - unaveraged")
 plt.show()
 
-lossi = torch.tensor(lossi).view(300, -1).mean(1)
+lossi = torch.tensor(lossi).view(-1, 1000).mean(1)
     
 plt.title("Loss")
 plt.plot(lossi)
